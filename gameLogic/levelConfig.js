@@ -1,5 +1,6 @@
 import * as walls from "../enviroment/wall.js";
 import * as floors from "../enviroment/floor.js";
+import * as door from "../enviroment/door.js";
 
 const levels = {
     entrada: {
@@ -15,10 +16,29 @@ const levels = {
             },
             wallConstructor: walls.Brick,
             floorConstructor: floors.Wood,
+            doors: [
+                {
+                    goto: "entrada",
+                    position: door.defaultPositions.top,
+                    constructor: door.Door
+                },
+                {
+                    goto: "entrada",
+                    position: door.defaultPositions.bottom,
+                    constructor: door.Door
+                },
+                {
+                    goto: "entrada",
+                    position: door.defaultPositions.left,
+                    constructor: door.Door
+                },
+                {
+                    goto: "entrada",
+                    position: door.defaultPositions.right,
+                    constructor: door.Door
+                }
+            ]
         },
-        doors: {
-            top: "shop"
-        }
     },
     shop: {
         label: "shop",
@@ -31,12 +51,15 @@ const levels = {
                 x: 75,
                 y: 250
             },
+            doors: [
+                {
+                    goto: "entrada",
+                    position: door.defaultPositions.top,
+                }
+            ],
             wallConstructor: walls.Shop,
             floorConstructor: floors.Concrete,
         },
-        doors: {
-            top: "entrada" //cambiar esto tu
-        }
     }
 };
 

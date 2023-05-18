@@ -8,10 +8,7 @@ export class Level {
         
         this.enviroment = new Enviroment(
             p5, 
-            this.config.data.enviroment.wallConstructor,
-            this.config.data.enviroment.floorConstructor,
-            this.config.data.enviroment.size,
-            this.config.data.enviroment.roomPos
+            this.config
         );
     }
     
