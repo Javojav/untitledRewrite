@@ -70,7 +70,7 @@ export class Door {
         this.roomPos = roomPos;
         this.goto = dataDoor.goto;
         
-        this.open = dataDoor.position.defaultOpen;
+        this.open = dataDoor.defaultOpen === undefined ? dataDoor.position.defaultOpen : dataDoor.defaultOpen;
 
         if (this.position.x < 0){
             this.position.x =  this.roomSize.w + this.position.x;

@@ -15,17 +15,17 @@ const levels = {
                 y: 75
             },
             wallConstructor: walls.Brick,
-            floorConstructor: floors.Wood,
+            floorConstructor: floors.Concrete,
             doors: [
                 {
                     goto: "entrada",
                     position: door.defaultPositions.top,
-                    constructor: door.Door
+                    constructor: door.Door,
                 },
                 {
                     goto: "entrada",
                     position: door.defaultPositions.bottom,
-                    constructor: door.Door
+                    constructor: door.Door,
                 },
                 {
                     goto: "entrada",
