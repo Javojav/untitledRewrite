@@ -1,4 +1,5 @@
 import {height, width} from '../constants.js';
+import { Humanoid } from './humanoid.js';
 
 export class Wall {
     constructor(heightTop, heightBottom, widthLeft, wifthRight) {
@@ -135,6 +136,9 @@ export class verticalBrick extends Brick {
 export class Stone extends Brick {
     constructor(heightTop, heightBottom, widthLeft, wifthRight) {
         super(heightTop, heightBottom, widthLeft, wifthRight);
+
+        this.humanoid = new Humanoid();
+
         this.color = {
             r: 125,
             g: 125,
@@ -160,6 +164,8 @@ export class Shop extends Brick {
         super(heightTop, heightBottom, widthLeft, wifthRight);
         this.tableHeight = 75;
         this.startShopHeight = 75;
+
+        this.shopKeeper = new Humanoid(150, 150, 50, 70);
 
         this.tableColor = {
             r: 125,
@@ -190,6 +196,7 @@ export class Shop extends Brick {
         this.shopBackgroundPattern(p5, this.widthLeft, this.startShopHeight, width - this.wifthRight - this.widthLeft , this.heightTop - this.tableHeight - this.startShopHeight);
         
         //humanoid
+        this.shopKeeper.display(p5);
     }
 
     shopBackgroundPattern(p5, x, y, w, h) {
