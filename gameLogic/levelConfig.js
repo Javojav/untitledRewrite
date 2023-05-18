@@ -45,16 +45,17 @@ const levels = {
         enviroment: {
             size: {
                 w: 650,
-                h: 300
+                h: 250
             },
             roomPos: {
                 x: 75,
-                y: 250
+                y: 275
             },
             doors: [
                 {
                     goto: "entrada",
-                    position: door.defaultPositions.top,
+                    position: door.defaultPositions.bottom,
+                    constructor: door.Door,
                 }
             ],
             wallConstructor: walls.Shop,
@@ -67,7 +68,7 @@ export function getConfig(number, p5) {
     let config = {}, data;
 
     if (number == 0) {
-        data = levels.entrada;
+        data = levels.shop;
     }
 
 

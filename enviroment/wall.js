@@ -1,3 +1,5 @@
+import {height, width} from '../constants.js';
+
 export class Wall {
     constructor(heightTop, heightBottom, widthLeft, wifthRight) {
         this.heightTop = heightTop;
@@ -18,23 +20,39 @@ export class Wall {
         
         //bottom
         this.horizontalWall(p5, 0, p5.height - this.heightBottom, p5.width, this.heightBottom);
-
+        
         //left
         this.verticalWall(p5, 0, 0, this.widthLeft, p5.height);
         
         //right
         this.verticalWall(p5, p5.width - this.wifthRight, 0, this.wifthRight, p5.height);
+        
+        //pattern
+        this.pattern(p5);
     }
-
+    
     horizontalWall(p5, x, y, w, h) {
         p5.fill(this.color.r, this.color.g, this.color.b);
+        p5.noStroke();
+        p5.rect(x, y, w, h);
+    }
+    
+    verticalWall(p5, x, y, w, h) {
+        p5.fill(this.color.r, this.color.g, this.color.b);
+        p5.noStroke();
         p5.rect(x, y, w, h);
     }
 
-    verticalWall(p5, x, y, w, h) {
-        p5.fill(this.color.r, this.color.g, this.color.b);
-        p5.rect(x, y, w, h);
+    pattern(p5) {
+        this.horizontalPattern(p5, this.widthLeft, 0, p5.width - this.wifthRight, this.heightTop);
+        this.horizontalPattern(p5, this.widthLeft, p5.height - this.heightBottom, p5.width - this.wifthRight, this.heightBottom);
+        this.verticalPattern(p5, 0, 0, this.widthLeft, p5.height);
+        this.verticalPattern(p5, p5.width - this.wifthRight, 0, this.wifthRight, p5.height);
     }
+
+    horizontalPattern(p5, x, y, w, h) {}
+
+    verticalPattern(p5, x, y, w, h) {}
 }
 
 export class Brick extends Wall {
@@ -60,13 +78,10 @@ export class Brick extends Wall {
         this.brickStrokeWeight = 1.2;
     }
     
-    horizontalWall(p5, x, y, w, h) {
-        p5.fill(this.color.r, this.color.g, this.color.b);
-        p5.noStroke()
-        p5.rect(x, y, w, h);
-
+    horizontalPattern(p5, x, y, w, h) {
         p5.stroke(this.brickStrokeColor.r, this.brickStrokeColor.g, this.brickStrokeColor.b);
         p5.strokeWeight(this.brickStrokeWeight);
+
         for (let i = y; i < y + h; i += this.brickHeight) {
             //horizontal lines
             p5.line(x, i, w, i);
@@ -79,12 +94,8 @@ export class Brick extends Wall {
             }
         }
     }
-    
-    verticalWall(p5, x, y, w, h) {
-        p5.fill(this.color.r, this.color.g, this.color.b);
-        p5.noStroke()
-        p5.rect(x, y, w, h);
 
+    verticalPattern(p5, x, y, w, h) {
         p5.stroke(this.brickStrokeColor.r, this.brickStrokeColor.g, this.brickStrokeColor.b);
         p5.strokeWeight(this.brickStrokeWeight);
         for (let i = y; i < y + h; i += this.brickHeight) {
@@ -106,11 +117,7 @@ export class verticalBrick extends Brick {
         super(heightTop, heightBottom, widthLeft, wifthRight);
     }
     
-    verticalWall(p5, x, y, w, h) {
-        p5.fill(this.color.r, this.color.g, this.color.b);
-        p5.noStroke()
-        p5.rect(x, y, w, h);
-
+    verticalPattern(p5, x, y, w, h) {
         p5.stroke(this.brickStrokeColor.r, this.brickStrokeColor.g, this.brickStrokeColor.b);
         p5.strokeWeight(this.brickStrokeWeight);
         for (let i = x; i < x + w; i += this.brickHeight) {
@@ -151,6 +158,20 @@ export class Stone extends Brick {
 export class Shop extends Brick {
     constructor(heightTop, heightBottom, widthLeft, wifthRight) {
         super(heightTop, heightBottom, widthLeft, wifthRight);
+        this.tableHeight = 75;
+        this.startShopHeight = 75;
+
+        this.tableColor = {
+            r: 125,
+            g: 75,
+            b: 0
+        };
+
+        this.backgroundColor = {
+            r: 0,
+            g: 0,
+            b: 0
+        };
     }
 
     display(p5) {
@@ -161,10 +182,21 @@ export class Shop extends Brick {
 
     shop(p5) {
         // poner mierdas relativas para esta cosa
-        p5.fill(0, 255, 0)
-        p5.rect(75, 75, 650, 375)
-        p5.fill(255, 0, 0)
-        p5.rect(75, 175, 650, 375)
+        p5.fill(this.backgroundColor.r, this.backgroundColor.g, this.backgroundColor.b);
+        p5.rect(this.widthLeft, this.startShopHeight, width - this.wifthRight - this.widthLeft , this.heightTop);
+
+        p5.fill(this.tableColor.r, this.tableColor.g, this.tableColor.b);
+        p5.rect(this.widthLeft, this.heightTop - this.tableHeight, width - this.wifthRight - this.widthLeft , this.tableHeight);
+        this.shopBackgroundPattern(p5, this.widthLeft, this.startShopHeight, width - this.wifthRight - this.widthLeft , this.heightTop - this.tableHeight - this.startShopHeight);
+        
+        //humanoid
+    }
+
+    shopBackgroundPattern(p5, x, y, w, h) {
+        p5.textSize(h - 20);
+        p5.textAlign(p5.CENTER, p5.TOP);
+        p5.fill(0, 125, 0);
+        p5.text("🤑", x, y + 15, w, h);
     }
 }
 
