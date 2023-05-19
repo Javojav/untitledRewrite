@@ -1,10 +1,18 @@
 import * as walls from "../enviroment/wall.js";
 import * as floors from "../enviroment/floor.js";
-import * as door from "../enviroment/door.js";
+import * as doorModel from "../enviroment/door.js";
+import * as door from "../entities/door.js";
+import { PlayerModel } from "../enviroment/humanoid.js";
+import { directions, width , height } from "../constants.js";
 
 const levels = {
     entrada: {
         label: "entrada",
+        startingPosition: {
+            x: width/2,
+            y: height/2,
+            facing: directions.right
+        },
         enviroment: {
             size: {
                 w: 650,
@@ -18,30 +26,27 @@ const levels = {
             floorConstructor: floors.Concrete,
             doors: [
                 {
-                    goto: "entrada",
+                    goto: "shop",
                     position: door.defaultPositions.top,
-                    constructor: door.Door,
+                    constructor: doorModel.ShopDoor,
+                    defaultOpen: true
                 },
                 {
-                    goto: "entrada",
-                    position: door.defaultPositions.bottom,
-                    constructor: door.Door,
-                },
-                {
-                    goto: "entrada",
-                    position: door.defaultPositions.left,
-                    constructor: door.Door
-                },
-                {
-                    goto: "entrada",
+                    goto: "nextLevel",
                     position: door.defaultPositions.right,
-                    constructor: door.Door
+                    constructor: doorModel.Door,
+                    defaultOpen: true
                 }
             ]
         },
     },
     shop: {
         label: "shop",
+        startingPosition: {
+            x: width/2,
+            y: 300,
+            facing: directions.right
+        },
         enviroment: {
             size: {
                 w: 650,
@@ -53,26 +58,71 @@ const levels = {
             },
             doors: [
                 {
-                    goto: "entrada",
+                    goto: "return",
                     position: door.defaultPositions.bottom,
-                    constructor: door.Door,
+                    constructor: doorModel.Door,
+                    defaultOpen: true
                 }
             ],
             wallConstructor: walls.Shop,
             floorConstructor: floors.Concrete,
         },
-    }
+    },
+    normal: {
+        label: "normal",
+        startingPosition: {
+            x: 75,
+            y: height/2,
+            facing: directions.right
+        },
+        enviroment: {
+            size: {
+                w: 650,
+                h: 450
+            },
+            roomPos: {
+                x: 75,
+                y: 75
+            },
+            wallConstructor: walls.Brick,
+            floorConstructor: floors.Concrete,
+            doors: [
+                {
+                    goto: "shop",
+                    position: door.defaultPositions.top,
+                    constructor: doorModel.ShopDoor,
+                },
+                {
+                    goto: "nextLevel",
+                    position: door.defaultPositions.right,
+                    constructor: doorModel.Door,
+                    defaultOpen: true
+                },
+                {
+                    goto: null,
+                    position: door.defaultPositions.left,
+                    constructor: doorModel.Door,
+                    defaultOpen: false
+                },
+            ],
+        },
+    },
 };
 
-export function getConfig(number) {
+export function getConfig(level) {
     let config = {}, data;
-
-    if (number == 0) {
-        data = levels.shop;
+    
+    if (Number.isInteger(level)) {
+        
+        data = Object.values(levels).find(lvl => lvl.label === "normal");
+    }
+    else {
+        data = Object.values(levels).find(lvl => lvl.label === level);
     }
 
-
-
+    config.playerModelConstructor = PlayerModel;
+    
     config.data = data;
+
     return config;
 }

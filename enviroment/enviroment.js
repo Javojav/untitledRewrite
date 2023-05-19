@@ -1,9 +1,11 @@
 import { createWall} from './wall.js';
 import { createFloor } from './floor.js';
 import { createDoor } from './door.js'; 
+import { createHumanoid } from './humanoid.js';
 
 export class Enviroment {
     constructor (p5, config) {
+        this.config = config;
         this.enviroment = config.data.enviroment;
         this.size = this.enviroment.size;
         this.roomPos = this.enviroment.roomPos;
@@ -24,6 +26,13 @@ export class Enviroment {
             this.size.h
         );
 
+        this.player = createHumanoid(
+            this.config.playerModelConstructor,
+            this.config.data.startingPosition.x,
+            this.config.data.startingPosition.y,
+            0
+        );
+
         this.doors = [];
 
         for (let door of config.data.enviroment.doors) {
@@ -32,7 +41,23 @@ export class Enviroment {
             );
         }
     }
+
+    getDoors() {
+        return [...this.doors];
+    }
     
+    update(p5, player, doors = null) {
+        this.player.setPosition(player.x, player.y, player.facing);
+        this.player.setHeight(player.size);
+
+        if (doors) {
+            this.doors = doors;
+        }
+            
+
+        this.display(p5);
+    }
+
     display(p5) {
         this.wall.display(p5);
         this.floor.display(p5);
@@ -40,5 +65,7 @@ export class Enviroment {
         for (let door of this.doors) {
             door.display(p5);
         }
+
+        this.player.display(p5);
     }
 }

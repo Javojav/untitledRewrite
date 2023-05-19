@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href="layout.css" rel="stylesheet">
-	<link href="style.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
-    <script src="main.js" type="module"></script>
-    <script src="constants.js" type="module"></script>
-    <script src="./enviroment/wall.js" type="module"></script>
-    <script src="./enviroment/enviroment.js" type="module"></script>
-    <script src="./enviroment/enviroment.js" type="module"></script>
-    <script src="./gameLogic/game.js" type="module"></script>
-    <script src="./gameLogic/level.js" type="module"></script>
-  </head>
-  <body>
-    <div align="center">
-		<h1 style="margin: 20px;">Untitled</h1>
-	</div>
+
+<head>
+  <link href="layout.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+  <script src="main.js" type="module"></script>
+  <script src="constants.js" type="module"></script>
+  <script src="./enviroment/wall.js" type="module"></script>
+  <script src="./enviroment/enviroment.js" type="module"></script>
+  <script src="./enviroment/enviroment.js" type="module"></script>
+  <script src="./gameLogic/game.js" type="module"></script>
+  <script src="./gameLogic/level.js" type="module"></script>
+  <script src="./entities/player.js" type="module"></script>
+  <script src="./gameDataDisplay.js" type="module"></script>
+</head>
+
+<body>
+  <div align="center">
+    <h1 style="margin: 20px;">Untitled</h1>
     <main>
     </main>
-  </body>
+    
+    <div id="gameData">
+      <p><span>level: </span><span id="levelDisplay"></span> </p>
+      <br>
+      <p><span>health: </span> <span>notImplemented</span></p>
+      <p><span>Ammo1: </span><span>notImplemented</span></p>
+      <p><span>Ammo2: </span><span>notImplemented</span></p>
+      <br>
+      <p><span>score: </span><span>notImplemented</span></p>
+    </div>
+
+  </div>
+</body>
+
 </html>

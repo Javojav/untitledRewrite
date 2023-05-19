@@ -1,25 +1,35 @@
 import { directions } from "../constants.js";
 
-
-
 export class Humanoid {
     constructor(x, y, h) {
         this.h = h;
-        this.w = h*0.45;
         /*
         I fucked up so i have to convert some coordinates 
         because i spend way to much time doing it wrong and i am not fixing more stuff here
         */
-        this.x = x - this.w/2;
-        this.y = y;
-        this.facing = directions.down;
-
-        this.defaultColor = {
+       this.x = x;
+       
+       this.y = y;
+       this.facing = directions.down;
+       
+       this.defaultColor = {
             r: 255,
             g: 255,
             b: 255
         };
 
+        this.secondaryColor = {
+            r: 0,
+            g: 0,
+            b: 0
+        }
+        
+        this.setThemParametersOrSomething();
+    }
+    
+    setThemParametersOrSomething() {
+        this.w = this.h*0.45;
+        this.x -= this.w/2
         // Fills array with default values
         this.headConfig = new Array(4).fill().map(() => ({ 
             x: this.x + this.w / 2,
@@ -27,16 +37,8 @@ export class Humanoid {
             size: this.h * .45,
             color: this.defaultColor,
             eyesize: (this.h * .45) / 6,
-            lefteyecolor: {
-                r: 0,
-                g: 0,
-                b: 0
-            },
-            righteyecolor: {
-                r: 0,
-                g: 0,
-                b: 0
-            }
+            lefteyecolor: this.secondaryColor,
+            righteyecolor: this.secondaryColor
         }));
         
         
@@ -49,7 +51,7 @@ export class Humanoid {
         this.headConfig[directions.right].lefteyecolor = this.headConfig[directions.right].color;
         
         const directionKeys = Object.keys(directions);
-
+    
         this.neckConfig = new Array(directionKeys.length).fill().map((_, index) => ({
             x: this.headConfig[directions[directionKeys[index]]].x,
             y: this.headConfig[directions[directionKeys[index]]].y + this.headConfig[directions[directionKeys[index]]].size / 2,
@@ -57,7 +59,7 @@ export class Humanoid {
             width: 2,
             color: this.defaultColor,
         }));
-
+    
         this.bodyConfig = new Array(directionKeys.length).fill().map((_, index) => ({
             x: this.x,
             y: this.neckConfig[directions[directionKeys[index]]].y + this.neckConfig[directions[directionKeys[index]]].size,
@@ -65,10 +67,10 @@ export class Humanoid {
             w: this.w / 2,
             color: this.defaultColor,
         }));
-
+    
         this.bodyConfig[directions.left].w = this.w / 3;
         this.bodyConfig[directions.right].w = this.bodyConfig[directions.left].w;
-
+    
         this.legsConfig = new Array(directionKeys.length).fill().map((_, index) => ({
             x: this.headConfig[directions[directionKeys[index]]].x,
             y: this.bodyConfig[directions[directionKeys[index]]].y + this.bodyConfig[directions.down].h,
@@ -78,10 +80,10 @@ export class Humanoid {
             width: 2,
             color: this.defaultColor,
         }));
-
+    
         this.legsConfig[directions.left].spearationBottom = this.bodyConfig[directions.left].w / 2;
         this.legsConfig[directions.right].spearationBottom = this.bodyConfig[directions.left].w /2;
-
+    
         this.armsConfig = new Array(directionKeys.length).fill().map((_, index) => ({
             x: this.headConfig[directions[directionKeys[index]]].x,
             y: this.bodyConfig[directions[directionKeys[index]]].y + this.bodyConfig[directions[directionKeys[index]]].h / 3,
@@ -90,7 +92,7 @@ export class Humanoid {
             width: 2,
             color: this.defaultColor
         }));
-
+    
         this.armsConfig[directions.left].endX = this.armsConfig[directions.left].x - this.w * 0.35;
         this.armsConfig[directions.right].endX = this.armsConfig[directions.right].x + this.w * 0.35;
     }
@@ -140,4 +142,37 @@ export class Humanoid {
         p5.strokeWeight(this.armsConfig[this.facing].width);
         p5.line(this.armsConfig[this.facing].x, this.armsConfig[this.facing].y, this.armsConfig[this.facing].endX, this.armsConfig[this.facing].endY);    
     }
+
+    setPosition(x, y, facing) {
+        this.x = x;
+        this.y = y;
+        this.facing = facing;
+    }
+
+    setHeight(h) {
+        this.h = h;
+        this.setThemParametersOrSomething();
+    }
+}
+
+export class PlayerModel extends Humanoid {
+    constructor(x, y, h) {
+        super(x, y, h)
+
+        this.defaultColor = {
+            r: 0,
+            g: 0,
+            b: 0
+        }
+
+        this.secondaryColor = {
+            r: 255,
+            g: 255,
+            b: 255
+        }
+    }
+}
+
+export function createHumanoid(constructor, x, y, h) {
+    return new constructor(x, y, h);
 }

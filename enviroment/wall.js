@@ -1,5 +1,5 @@
 import {height, width} from '../constants.js';
-import { Humanoid } from './humanoid.js';
+import*  as Humanoid from './humanoid.js';
 
 export class Wall {
     constructor(heightTop, heightBottom, widthLeft, wifthRight) {
@@ -165,7 +165,7 @@ export class Shop extends Brick {
         this.tableHeight = 75;
         this.startShopHeight = 75;
 
-        this.shopKeeper = new Humanoid(width/2, this.heightTop - this.tableHeight * 1.75, this.tableHeight);
+        this.shopKeeper = Humanoid.createHumanoid(Humanoid.Humanoid, width/2, this.heightTop - this.tableHeight * 1.75, this.tableHeight);
 
         this.tableColor = {
             r: 125,
