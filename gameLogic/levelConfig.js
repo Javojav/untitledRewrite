@@ -64,7 +64,7 @@ const levels = {
     }
 };
 
-export function getConfig(number, p5) {
+export function getConfig(number) {
     let config = {}, data;
 
     if (number == 0) {

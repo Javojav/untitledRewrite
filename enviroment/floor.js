@@ -14,6 +14,7 @@ export class Floor {
     
     display(p5) {
         p5.fill(this.color.r, this.color.g, this.color.b);
+        p5.noStroke();
         p5.rect(this.x, this.y, this.w, this.h);
 
         this.floorPattern(p5, this.x, this.y, this.w, this.h);

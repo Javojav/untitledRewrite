@@ -165,7 +165,7 @@ export class Shop extends Brick {
         this.tableHeight = 75;
         this.startShopHeight = 75;
 
-        this.shopKeeper = new Humanoid(150, 150, 50, 70);
+        this.shopKeeper = new Humanoid(width/2, this.heightTop - this.tableHeight * 1.75, this.tableHeight);
 
         this.tableColor = {
             r: 125,
@@ -187,16 +187,17 @@ export class Shop extends Brick {
     }
 
     shop(p5) {
-        // poner mierdas relativas para esta cosa
         p5.fill(this.backgroundColor.r, this.backgroundColor.g, this.backgroundColor.b);
         p5.rect(this.widthLeft, this.startShopHeight, width - this.wifthRight - this.widthLeft , this.heightTop);
 
-        p5.fill(this.tableColor.r, this.tableColor.g, this.tableColor.b);
-        p5.rect(this.widthLeft, this.heightTop - this.tableHeight, width - this.wifthRight - this.widthLeft , this.tableHeight);
         this.shopBackgroundPattern(p5, this.widthLeft, this.startShopHeight, width - this.wifthRight - this.widthLeft , this.heightTop - this.tableHeight - this.startShopHeight);
         
         //humanoid
         this.shopKeeper.display(p5);
+
+        p5.fill(this.tableColor.r, this.tableColor.g, this.tableColor.b);
+        p5.rect(this.widthLeft, this.heightTop - this.tableHeight, width - this.wifthRight - this.widthLeft , this.tableHeight);
+        
     }
 
     shopBackgroundPattern(p5, x, y, w, h) {
