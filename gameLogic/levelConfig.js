@@ -91,6 +91,7 @@ const levels = {
                     goto: "shop",
                     position: door.defaultPositions.top,
                     constructor: doorModel.ShopDoor,
+                    defaultOpen: true
                 },
                 {
                     goto: "nextLevel",
