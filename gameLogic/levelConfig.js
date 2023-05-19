@@ -34,7 +34,7 @@ const levels = {
                 {
                     goto: "nextLevel",
                     position: door.defaultPositions.right,
-                    constructor: doorModel.Door,
+                    constructor: doorModel.ArrowDoor,
                     defaultOpen: true
                 }
             ]
@@ -60,12 +60,12 @@ const levels = {
                 {
                     goto: "return",
                     position: door.defaultPositions.bottom,
-                    constructor: doorModel.Door,
+                    constructor: doorModel.ReturnDoor,
                     defaultOpen: true
                 }
             ],
             wallConstructor: walls.Shop,
-            floorConstructor: floors.Concrete,
+            floorConstructor: floors.Wood,
         },
     },
     normal: {
@@ -96,7 +96,7 @@ const levels = {
                 {
                     goto: "nextLevel",
                     position: door.defaultPositions.right,
-                    constructor: doorModel.Door,
+                    constructor: doorModel.ArrowDoor,
                     defaultOpen: true
                 },
                 {

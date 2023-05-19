@@ -1,3 +1,5 @@
+import { directions } from "../constants.js";
+
 const defaultSizes = {
     horizontal : {
         open: {
@@ -23,6 +25,7 @@ const defaultSizes = {
 
 export const defaultPositions = {
     top: {
+        direction: directions.up,
         open: defaultSizes.horizontal.open,
         closed: defaultSizes.horizontal.closed,
         x: 0,
@@ -32,6 +35,7 @@ export const defaultPositions = {
         defaultOpen: false
     }, 
     bottom: {
+        direction: directions.down,
         open: defaultSizes.horizontal.open,
         closed: defaultSizes.horizontal.closed,
         centerX: true,
@@ -41,6 +45,7 @@ export const defaultPositions = {
         defaultOpen: false
     },
     left: {
+        direction: directions.left,
         open: defaultSizes.vertical.open,
         closed: defaultSizes.vertical.closed,
         centerX: false,
@@ -50,6 +55,7 @@ export const defaultPositions = {
         defaultOpen: false
     },
     right: {
+        direction: directions.right,
         open: defaultSizes.vertical.open,
         closed: defaultSizes.vertical.closed,
         centerX: false,
@@ -65,6 +71,7 @@ export class DoorLogic {
     constructor (dataDoor, roomPos, roomSize) {
         this.roomSize = roomSize;
         this.roomPos = roomPos;
+        this.dataDoor = dataDoor;
 
         this.goto = dataDoor.goto;
 

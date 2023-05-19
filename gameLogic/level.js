@@ -26,7 +26,6 @@ export class Level {
     }
     
     update(p5, player) {
-
         let doors = this.updateDoors ? this.doors : null;
 
         this.enviroment.update(p5, player, doors);

@@ -1,4 +1,5 @@
 import { directions } from "../constants.js";
+import * as itemModel from "./item.js";
 
 export class Humanoid {
     constructor(x, y, h) {
@@ -95,6 +96,18 @@ export class Humanoid {
     
         this.armsConfig[directions.left].endX = this.armsConfig[directions.left].x - this.w * 0.35;
         this.armsConfig[directions.right].endX = this.armsConfig[directions.right].x + this.w * 0.35;
+
+        this.itemconfig = new Array(directionKeys.length).fill().map((_, index) => ({
+            x: this.armsConfig[directions[directionKeys[index]]].endX,
+            y: this.armsConfig[directions[directionKeys[index]]].endY,
+            display: false,
+        }));
+
+        this.itemconfig[directions.left].display = true;
+        this.itemconfig[directions.right].display = true;
+
+        // this.item = null;
+        this.item = new itemModel.Gun(75)
     }
 
     display(p5) {
@@ -102,10 +115,11 @@ export class Humanoid {
         //p5.rect(this.x, this.y, this.w, this.h);
         
         this.neck(p5);
-        this.legs(p5, this.x, this.y, this.w, this.h);
+        this.legs(p5);
         this.head(p5);
-        this.body(p5, this.x, this.y, this.w, this.h);
-        this.arms(p5, this.x, this.y, this.w, this.h);
+        this.body(p5);
+        this.arms(p5);
+        this.itemDisplay(p5);
     }
 
     head(p5) {
@@ -130,7 +144,7 @@ export class Humanoid {
         p5.rect(this.bodyConfig[this.facing].x + this.w/2 - this.bodyConfig[this.facing].w/2 , this.bodyConfig[this.facing].y, this.bodyConfig[this.facing].w, this.bodyConfig[this.facing].h);
     }
     
-    legs(p5, x, y, w, h) {
+    legs(p5) {
         p5.stroke(this.legsConfig[this.facing].color.r, this.legsConfig[this.facing].color.g, this.legsConfig[this.facing].color.b);
         p5.strokeWeight(this.legsConfig[this.facing].width);
         p5.line(this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationTop, this.legsConfig[this.facing].y, this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationBottom, this.legsConfig[this.facing].y + this.legsConfig[this.facing].h);
@@ -143,6 +157,12 @@ export class Humanoid {
         p5.line(this.armsConfig[this.facing].x, this.armsConfig[this.facing].y, this.armsConfig[this.facing].endX, this.armsConfig[this.facing].endY);    
     }
 
+    itemDisplay(p5) {
+        if (this.item && this.itemconfig[this.facing].display) {
+            this.item.display(p5, this.itemconfig[this.facing].x, this.itemconfig[this.facing].y, this.facing);
+        }
+    }
+
     setPosition(x, y, facing) {
         this.x = x;
         this.y = y;
@@ -152,6 +172,10 @@ export class Humanoid {
     setHeight(h) {
         this.h = h;
         this.setThemParametersOrSomething();
+    }
+
+    setItem(item) {
+        this.item = item;
     }
 }
 

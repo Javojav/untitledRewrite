@@ -14,7 +14,10 @@ export class Game {
         this.levelNumerito = 0;
         this.loadLevel = "entrada";
         this.level = null;
-        this.previousLevel = null;
+        this.previousLevel = {
+            level: null,
+            playerRoom: null,
+        }
 
         this.player = new Player(0, 0, 75);
 
@@ -25,9 +28,21 @@ export class Game {
     }
     
     startLevel(p5) {
-        this.previousLevel = this.level;
+        this.savePreviousLevel();
         this.level = new Level(p5, this.loadLevel, this.player);
     }
+
+    savePreviousLevel() {
+        // maybe put this in a stack at some point
+        this.previousLevel.playerRoom = {...this.player.room};
+        this.previousLevel.level = this.level;
+    }
+
+    returnLevel() {
+        this.player.room = this.previousLevel.playerRoom;
+        this.level = this.previousLevel.level;
+    }
+    
 
     update(p5) {
         this.player.handleInput(p5);
@@ -40,7 +55,7 @@ export class Game {
                 this.levelNumerito++;
                 this.loadLevel = this.levelNumerito;
             } else if (nextLevel == "return") {
-                this.level = this.previousLevel;
+                this.returnLevel();
                 return;
             }
             else {
