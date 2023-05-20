@@ -17,7 +17,7 @@ export class humanoidEntity extends Entity {
     }
 
     checkWallCollision() {
-        if (this.x < this.room.roomPos.x) {
+        if (this.x - this.model.w/2 < this.room.roomPos.x) {
             return true;
         }
         
@@ -25,7 +25,7 @@ export class humanoidEntity extends Entity {
             return true;
         }
 
-        if (this.x + this.model.w > this.room.roomSize.w + this.room.roomPos.x) {
+        if (this.x + this.model.w/2 > this.room.roomSize.w + this.room.roomPos.x) {
             return true;
         }
 

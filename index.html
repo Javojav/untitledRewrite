@@ -14,6 +14,7 @@
   <script src="./gameLogic/game.js" type="module"></script>
   <script src="./gameLogic/level.js" type="module"></script>
   <script src="./entities/player.js" type="module"></script>
+  <script src="./entities/item.js" type="module"></script>
   <script src="./gameDataDisplay.js" type="module"></script>
 </head>
 
@@ -26,11 +27,11 @@
     <div id="gameData">
       <p><span>level: </span><span id="levelDisplay"></span> </p>
       <br>
-      <p><span>health: </span> <span>notImplemented</span></p>
-      <p><span>Ammo1: </span><span>notImplemented</span></p>
-      <p><span>Ammo2: </span><span>notImplemented</span></p>
+      <p><span>health: </span> <span id="healthDisplay"></span></p>
+      <p><span>Ammo1: </span><span id="currentAmmoDisplay1"></span>/<span id="inventoryAmmoDisplay1"></span></p>
+      <p><span>Ammo2: </span><span id="currentAmmoDisplay2"></span>/<span id="inventoryAmmoDisplay2"></span></p>
       <br>
-      <p><span>score: </span><span>notImplemented</span></p>
+      <p><span>score: </span><span id="scoreDisplay">notImplemented</span></p>
     </div>
 
   </div>

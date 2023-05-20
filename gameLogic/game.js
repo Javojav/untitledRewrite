@@ -63,7 +63,7 @@ export class Game {
             }
             this.startLevel(p5);
         }
-        this.gameDataDisplay.update(this.level.lvl);
+        this.gameDataDisplay.update(this.level.lvl, this.player);
 
     }
 }

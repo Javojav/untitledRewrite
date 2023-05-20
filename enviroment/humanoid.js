@@ -106,8 +106,7 @@ export class Humanoid {
         this.itemconfig[directions.left].display = true;
         this.itemconfig[directions.right].display = true;
 
-        // this.item = null;
-        this.item = new itemModel.Gun(75)
+        this.item = null;
     }
 
     display(p5) {

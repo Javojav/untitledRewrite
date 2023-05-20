@@ -71,7 +71,7 @@ const levels = {
     normal: {
         label: "normal",
         startingPosition: {
-            x: 75,
+            x: 87,
             y: height/2,
             facing: directions.right
         },

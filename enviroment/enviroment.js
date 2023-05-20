@@ -50,11 +50,15 @@ export class Enviroment {
         this.player.setPosition(player.x, player.y, player.facing);
         this.player.setHeight(player.size);
 
+        const holdingIndex = player.inventory.holding;
+        const holding = player.inventory.items[holdingIndex];
+        
+        this.player.setItem(holding ? holding.model : null);
+
         if (doors) {
             this.doors = doors;
         }
             
-
         this.display(p5);
     }
 
