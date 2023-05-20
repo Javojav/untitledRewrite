@@ -29,6 +29,7 @@ export class Game {
     
     startLevel(p5) {
         this.savePreviousLevel();
+        this.player.clearShotBullets();
         this.level = new Level(p5, this.loadLevel, this.player);
     }
 

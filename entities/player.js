@@ -32,7 +32,8 @@ export class Player extends humanoidEntity {
             this.move(directions.right);
         }
         if (p5.keyIsDown(keys.shoot)) {
-            this.inventory.items[this.inventory.holding].shoot();
+            const gunPosition = this.inventory.items[this.inventory.holding].model.getLastPosition();
+            this.inventory.items[this.inventory.holding].shoot(this.room, gunPosition.x, gunPosition.y, this.facing);
         }
         if (p5.keyIsDown(keys.reload)) {
             this.inventory.items[this.inventory.holding].reload();
@@ -42,6 +43,22 @@ export class Player extends humanoidEntity {
         }
         if (p5.keyIsDown(keys.item2)) {
             this.inventory.holding = 1;
+        }
+    }
+
+    clearShotBullets() {
+        for (let i = 0; i < this.inventory.items.length; i++) {
+            if (this.inventory.items[i] != null) {
+                this.inventory.items[i].clearShotBullets();
+            }
+        }
+    }
+
+    updateBullets(p5) {
+        for (let item of this.inventory.items) {
+            if (item != null) {
+                item.updateBullets(p5);
+            }
         }
     }
 
