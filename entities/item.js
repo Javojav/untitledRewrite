@@ -42,6 +42,17 @@ export class Gun {
         this.shotBullets = [];
     }
 
+    removeBullet(bullet) {
+        const index = this.shotBullets.indexOf(bullet);
+
+        if (index == -1) {
+            return;
+        }
+
+        this.shotBullets.splice(index, 1);
+    }
+
+
     updateBullets(p5) {
         let bulletsToRemove = [];
 
@@ -54,9 +65,10 @@ export class Gun {
         }
         
         for (let bullet of bulletsToRemove) {
-          const index = this.shotBullets.indexOf(bullet);
-          this.shotBullets.splice(index, 1);
+            this.removeBullet(bullet);
         }
+
+        return this.shotBullets;
     }
 
     setCooldown() {

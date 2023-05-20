@@ -7,7 +7,7 @@ export class Player extends humanoidEntity {
     constructor(x, y, size) {
         super(x, y, size);
 
-        this.health = 3;
+        this.invulnerabilityTime = 0.5;
 
         this.inventory = {
             items: [],
@@ -32,7 +32,13 @@ export class Player extends humanoidEntity {
             this.move(directions.right);
         }
         if (p5.keyIsDown(keys.shoot)) {
-            const gunPosition = this.inventory.items[this.inventory.holding].model.getLastPosition();
+            const heldItem = this.inventory.items[this.inventory.holding];
+
+            if (heldItem == null) {
+                return;
+            }
+
+            const gunPosition = heldItem.model.getLastPosition();
             this.inventory.items[this.inventory.holding].shoot(this.room, gunPosition.x, gunPosition.y, this.facing);
         }
         if (p5.keyIsDown(keys.reload)) {
@@ -55,11 +61,45 @@ export class Player extends humanoidEntity {
     }
 
     updateBullets(p5) {
+        let ret = [];
+
         for (let item of this.inventory.items) {
             if (item != null) {
-                item.updateBullets(p5);
+                ret = ret.concat(item.updateBullets(p5));
             }
         }
+
+        return ret;
+    }
+
+    removeBullets(bullets) {
+        for (let item of this.inventory.items) {
+            if (item == null) {
+                continue;
+            }
+            
+            for (let bullet of bullets) {
+                item.removeBullet(bullet);
+            }
+        }
+    }
+
+    enemyCollision(enemies) {
+        for (let enemy of enemies) {
+            if (enemy.dead) {
+                continue;
+            }
+
+            if (this.y < enemy.model.y + enemy.model.h && 
+                this.y + this.size > enemy.model.y &&
+                this.x - this.model.w/2 - enemy.model.w/2 < enemy.model.x + enemy.model.w/2 &&
+                this.x - this.model.w/2 + enemy.model.w/2 > enemy.model.x - enemy.model.w/2
+            ) {
+                return enemy;
+            }
+        }
+
+        return null;
     }
 
     checkDoorCollision(doors) {

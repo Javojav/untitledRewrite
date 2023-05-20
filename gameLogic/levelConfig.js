@@ -4,6 +4,7 @@ import * as doorModel from "../enviroment/door.js";
 import * as door from "../entities/door.js";
 import { PlayerModel } from "../enviroment/humanoid.js";
 import { directions, width , height } from "../constants.js";
+import * as enemys from "../entities/enemy.js";
 
 const levels = {
     entrada: {
@@ -120,6 +121,13 @@ export function getConfig(level) {
     else {
         data = Object.values(levels).find(lvl => lvl.label === level);
     }
+    
+    config.enemys = [{
+        x: 300,
+        y: 300,
+        size: 75,
+        constructor: enemys.StupidFuckingEnemy
+    }];
 
     config.playerModelConstructor = PlayerModel;
     

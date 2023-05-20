@@ -22,6 +22,8 @@ export class Entity {
                 y: -1
             }
         }
+
+        this.recentCollision = false;
     }
 
     setRoom(roomSize, roomPos) {
@@ -44,7 +46,7 @@ export class Entity {
             x: this.x,
             y: this.y
         };
-
+        
         switch (direction) {
             case directions.up:
                 this.y -= this.speed;
@@ -59,7 +61,7 @@ export class Entity {
                 this.x += this.speed;
                 break;
         }
-
+            
         if (this.checkWallCollision()) {
             this.x = previousPosition.x;
             this.y = previousPosition.y;

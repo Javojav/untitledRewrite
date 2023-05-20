@@ -40,19 +40,29 @@ export class Enviroment {
                 createDoor(door.constructor, door, this.enviroment.roomPos, this.enviroment.size)
             );
         }
+
+        this.enemys = [];
     }
 
     getDoors() {
         return [...this.doors];
     }
     
-    update(p5, player, doors = null) {
+    update(p5, player, enemys, doors = null) {
         this.player.setPosition(player.x, player.y, player.facing);
         this.player.setHeight(player.size);
+        this.player.alpha = player.invulnerable ? 100 : 255;
 
         const holdingIndex = player.inventory.holding;
         const holding = player.inventory.items[holdingIndex];
         
+        this.enemys = enemys;
+
+        for (let enemy of this.enemys) {
+            enemy.model.setHealthBarParameters(enemy.health, enemy.maxHealth)
+            enemy.model.setPosition(enemy.x, enemy.y, enemy.facing);
+        }
+
         this.player.setItem(holding ? holding.model : null);
 
         if (doors) {
@@ -71,5 +81,9 @@ export class Enviroment {
         }
 
         this.player.display(p5);
+
+        for (let enemy of this.enemys) {
+            enemy.model.display(p5);
+        }
     }
 }

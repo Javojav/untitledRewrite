@@ -2,28 +2,25 @@ import { directions } from "../constants.js";
 import * as itemModel from "./item.js";
 
 export class Humanoid {
-    constructor(x, y, h) {
+    constructor(x, y, h, displayHealthBar = false, defaultColor = {r: 255, g: 255, b: 255}, secondaryColor = {r: 0, g: 0, b: 0}) {
         this.h = h;
         /*
         I fucked up so i have to convert some coordinates 
         because i spend way to much time doing it wrong and i am not fixing more stuff here
         */
-       this.x = x;
+        this.x = x;
+       
+        this.alpha = 255;
+
+       this.displayHealthBar = displayHealthBar;
+       this.health = 0;
+       this.maxHealth = 0;
+
+       this.defaultColor = defaultColor;
+       this.secondaryColor = secondaryColor;
        
        this.y = y;
        this.facing = directions.down;
-       
-       this.defaultColor = {
-            r: 255,
-            g: 255,
-            b: 255
-        };
-
-        this.secondaryColor = {
-            r: 0,
-            g: 0,
-            b: 0
-        }
         
         this.setThemParametersOrSomething();
     }
@@ -38,18 +35,20 @@ export class Humanoid {
             size: this.h * .45,
             color: this.defaultColor,
             eyesize: (this.h * .45) / 6,
+            displayLeftEye: true,
+            displayRightEye: true,
             lefteyecolor: this.secondaryColor,
             righteyecolor: this.secondaryColor
         }));
         
         
         // Sets cusom values for each direction
-        this.headConfig[directions.up].lefteyecolor = this.headConfig[directions.up].color;
-        this.headConfig[directions.up].righteyecolor = this.headConfig[directions.up].color;
+        this.headConfig[directions.up].displayLeftEye = false;
+        this.headConfig[directions.up].displayRightEye = false;
         
-        this.headConfig[directions.left].righteyecolor = this.headConfig[directions.left].color;
+        this.headConfig[directions.left].displayRightEye = false;
         
-        this.headConfig[directions.right].lefteyecolor = this.headConfig[directions.right].color;
+        this.headConfig[directions.right].displayLeftEye = false;
         
         const directionKeys = Object.keys(directions);
     
@@ -119,16 +118,26 @@ export class Humanoid {
         this.body(p5);
         this.arms(p5);
         this.itemDisplay(p5);
+
+        if (this.displayHealthBar) {
+            this.healthBar(p5);
+        }
     }
 
     head(p5) {
         p5.noStroke()
-        p5.fill(this.headConfig[this.facing].color.r, this.headConfig[this.facing].color.g, this.headConfig[this.facing].color.b);
+        p5.fill(this.headConfig[this.facing].color.r, this.headConfig[this.facing].color.g, this.headConfig[this.facing].color.b, this.alpha);
         p5.ellipse(this.headConfig[this.facing].x, this.headConfig[this.facing].y, this.headConfig[this.facing].size, this.headConfig[this.facing].size);
-        p5.fill(this.headConfig[this.facing].lefteyecolor.r, this.headConfig[this.facing].lefteyecolor.g, this.headConfig[this.facing].lefteyecolor.b);
-        p5.ellipse(this.headConfig[this.facing].x - this.headConfig[this.facing].size / 5, this.headConfig[this.facing].y - this.headConfig[this.facing].size/10, this.headConfig[this.facing].eyesize, this.headConfig[this.facing].eyesize);
-        p5.fill(this.headConfig[this.facing].righteyecolor.r, this.headConfig[this.facing].righteyecolor.g, this.headConfig[this.facing].righteyecolor.b);
-        p5.ellipse(this.headConfig[this.facing].x + this.headConfig[this.facing].size / 5, this.headConfig[this.facing].y - this.headConfig[this.facing].size/10, this.headConfig[this.facing].eyesize, this.headConfig[this.facing].eyesize);
+        
+        if (this.headConfig[this.facing].displayLeftEye) {
+            p5.fill(this.headConfig[this.facing].lefteyecolor.r, this.headConfig[this.facing].lefteyecolor.g, this.headConfig[this.facing].lefteyecolor.b);
+            p5.ellipse(this.headConfig[this.facing].x - this.headConfig[this.facing].size / 5, this.headConfig[this.facing].y - this.headConfig[this.facing].size/10, this.headConfig[this.facing].eyesize, this.headConfig[this.facing].eyesize, this.alpha);
+        }
+
+        if (this.headConfig[this.facing].displayRightEye) {
+            p5.fill(this.headConfig[this.facing].righteyecolor.r, this.headConfig[this.facing].righteyecolor.g, this.headConfig[this.facing].righteyecolor.b);
+            p5.ellipse(this.headConfig[this.facing].x + this.headConfig[this.facing].size / 5, this.headConfig[this.facing].y - this.headConfig[this.facing].size/10, this.headConfig[this.facing].eyesize, this.headConfig[this.facing].eyesize, this.alpha);
+        }       
     }
 
     neck(p5) {
@@ -139,7 +148,7 @@ export class Humanoid {
     
     body(p5) {
         p5.noStroke()
-        p5.fill(this.bodyConfig[this.facing].color.r, this.bodyConfig[this.facing].color.g, this.bodyConfig[this.facing].color.b);
+        p5.fill(this.bodyConfig[this.facing].color.r, this.bodyConfig[this.facing].color.g, this.bodyConfig[this.facing].color.b, this.alpha);
         p5.rect(this.bodyConfig[this.facing].x + this.w/2 - this.bodyConfig[this.facing].w/2 , this.bodyConfig[this.facing].y, this.bodyConfig[this.facing].w, this.bodyConfig[this.facing].h);
     }
     
@@ -162,10 +171,23 @@ export class Humanoid {
         }
     }
 
+    healthBar(p5) {
+        let barHeight = this.h * 0.05;
+
+        p5.strokeWeight(1);
+        p5.stroke(0);
+        p5.fill(255, 0, 0);
+        p5.rect(this.x , this.y - 4 * barHeight, this.w, barHeight);
+        p5.fill(0, 255, 0);
+        p5.rect(this.x , this.y - 4 * barHeight, this.w * this.health / this.maxHealth, barHeight);
+        
+    }
+
     setPosition(x, y, facing) {
         this.x = x;
         this.y = y;
         this.facing = facing;
+        this.setThemParametersOrSomething();
     }
 
     setHeight(h) {
@@ -175,6 +197,19 @@ export class Humanoid {
 
     setItem(item) {
         this.item = item;
+    }
+
+    setHealth(health) {
+        this.health = health;
+    }
+
+    setMaxHealth(maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    setHealthBarParameters(health, maxHealth) {
+        this.health = health;
+        this.maxHealth = maxHealth;
     }
 }
 
@@ -193,6 +228,14 @@ export class PlayerModel extends Humanoid {
             g: 255,
             b: 255
         }
+    }
+}
+
+export class EnemyModel extends Humanoid {
+    constructor(x, y, h, maxHealth) {
+        super(x, y, h, true, {r: 255,g: 0,b: 0}, {r:255, g: 255, b: 255});
+
+        this.setHealthBarParameters(maxHealth, maxHealth);
     }
 }
 
