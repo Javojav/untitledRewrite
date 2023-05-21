@@ -232,10 +232,28 @@ export class PlayerModel extends Humanoid {
 }
 
 export class EnemyModel extends Humanoid {
-    constructor(x, y, h, maxHealth) {
-        super(x, y, h, true, {r: 255,g: 0,b: 0}, {r:255, g: 255, b: 255});
+    constructor(x, y, h, maxHealth, color1 = null, color2 = null) {
+        color1 = color1 == null ? {r: 255, g: 0, b: 0} : color1;
+        color2 = color2 == null ? {r: 255, g: 255, b: 255} : color2;
+        super(x, y, h, true, color1, color2);
 
         this.setHealthBarParameters(maxHealth, maxHealth);
+    }
+}
+
+export class RandomWalkerEnemyModel extends EnemyModel {
+    constructor(x, y, h, maxHealth) {
+        let color1 = {r: 255, g: 0, b: 0};
+        let color2 = {r: 0, g: 0, b: 0};
+        super(x, y, h, maxHealth, color1, color2);
+    }
+}
+
+export class FollowingEnemyModel extends EnemyModel {
+    constructor(x, y, h, maxHealth) {
+        let color1 = {r: 100, g: 0, b: 0};
+        let color2 = {r: 255, g: 0, b: 0};
+        super(x, y, h, maxHealth, color1, color2);
     }
 }
 

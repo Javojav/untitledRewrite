@@ -62,3 +62,23 @@ export class Pistol extends Item {
         p5.rect(x - this.size*0.10, y - this.size*0.03, this.size*0.10, this.size*0.01);
     }
 }
+
+export class AutoRifle extends Pistol {
+    constructor(size) {
+        super(size);
+    }
+
+    right(p5, x, y) {
+        p5.fill(this.color.r, this.color.g, this.color.b);
+        p5.rect(x, y - this.size*0.02, this.size*0.02, this.size*0.05);
+        p5.rect(x, y - this.size*0.03, this.size*0.10, this.size*0.01);
+        p5.rect(x, y - this.size*0.01, this.size*0.10, this.size*0.01);
+    }
+
+    left(p5, x, y) {
+        p5.fill(this.color.r, this.color.g, this.color.b);
+        p5.rect(x - this.size*0.02, y - this.size*0.02, this.size*0.02, this.size*0.05);
+        p5.rect(x - this.size*0.10, y - this.size*0.03, this.size*0.10, this.size*0.01);
+        p5.rect(x - this.size*0.10, y - this.size*0.01, this.size*0.10, this.size*0.01);
+    }
+}

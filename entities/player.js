@@ -14,7 +14,7 @@ export class Player extends humanoidEntity {
             maxItems: 2,
             holding: 0
         };
-        this.inventory.items = [new items.Pistol(this.size), null];
+        this.inventory.items = [new items.Pistol(this.size), new items.AutoRifle(this.size)];
     }
 
     handleInput(p5) {
@@ -89,6 +89,8 @@ export class Player extends humanoidEntity {
             if (enemy.dead) {
                 continue;
             }
+
+            // Doesnt work right
 
             if (this.y < enemy.model.y + enemy.model.h && 
                 this.y + this.size > enemy.model.y &&

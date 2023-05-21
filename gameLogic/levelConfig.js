@@ -92,13 +92,11 @@ const levels = {
                     goto: "shop",
                     position: door.defaultPositions.top,
                     constructor: doorModel.ShopDoor,
-                    defaultOpen: true
                 },
                 {
                     goto: "nextLevel",
                     position: door.defaultPositions.right,
                     constructor: doorModel.ArrowDoor,
-                    defaultOpen: true
                 },
                 {
                     goto: null,
@@ -111,6 +109,69 @@ const levels = {
     },
 };
 
+function randomPos(data, enemySize) {
+    let playerStartignPos = {
+        x: data.startingPosition.x,
+        y: data.startingPosition.y
+    };
+
+    const minX = data.enviroment.roomPos.x + enemySize + playerStartignPos.x;
+    const maxX = data.enviroment.roomPos.x + data.enviroment.size.w - enemySize;
+    const minY = data.enviroment.roomPos.y;
+    const maxY = data.enviroment.roomPos.y + data.enviroment.size.h - enemySize;
+
+    let pos = {
+        x: Math.floor(Math.random() * (maxX - minX + 1)) + minX,
+        y: Math.floor(Math.random() * (maxY - minY + 1)) + minY,
+    };
+
+    return pos;
+ 
+}
+
+function enemyGenerator(level, data) {
+    let enemyArray = [];
+    let enemySize = 75
+    let type = null;
+    
+    const constructors = {
+        stupid: enemys.StupidFuckingEnemy,
+        random: enemys.RandomWalker,
+        following: enemys.Following
+    }
+
+    if (Number.isInteger(level) == false) 
+        return enemyArray;
+    
+    if (level <= 9) {
+        type = constructors.following
+    }
+    
+    if (level <= 6) {
+        type = constructors.random
+    }
+
+    if (level <= 3) {
+        type = constructors.stupid
+    }
+
+
+    if (level < 10) {
+        for (let i = 0; i < ((level-1)%3) + 1; i++) {       
+            const position = randomPos(data, enemySize);
+            enemyArray.push({
+                    x: position.x,
+                    y: position.y,
+                    size: enemySize,
+                    constructor: type
+                }
+            );
+        }
+    }
+
+    return enemyArray;
+}
+
 export function getConfig(level) {
     let config = {}, data;
     
@@ -122,12 +183,7 @@ export function getConfig(level) {
         data = Object.values(levels).find(lvl => lvl.label === level);
     }
     
-    config.enemys = [{
-        x: 300,
-        y: 300,
-        size: 75,
-        constructor: enemys.StupidFuckingEnemy
-    }];
+    config.enemys = enemyGenerator(level, data);
 
     config.playerModelConstructor = PlayerModel;
     

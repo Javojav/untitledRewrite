@@ -53,16 +53,16 @@ export class Enviroment {
         this.player.setHeight(player.size);
         this.player.alpha = player.invulnerable ? 100 : 255;
 
-        const holdingIndex = player.inventory.holding;
-        const holding = player.inventory.items[holdingIndex];
-        
         this.enemys = enemys;
-
+        
         for (let enemy of this.enemys) {
             enemy.model.setHealthBarParameters(enemy.health, enemy.maxHealth)
             enemy.model.setPosition(enemy.x, enemy.y, enemy.facing);
         }
-
+        
+        const holdingIndex = player.inventory.holding;
+        const holding = player.inventory.items[holdingIndex];
+        
         this.player.setItem(holding ? holding.model : null);
 
         if (doors) {

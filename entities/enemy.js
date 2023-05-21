@@ -1,22 +1,24 @@
 import { humanoidEntity } from "./humanoidEntity.js";
 import { directions } from "../constants.js";
-import { EnemyModel } from "../enviroment/humanoid.js";
+import { EnemyModel, RandomWalkerEnemyModel, FollowingEnemyModel } from "../enviroment/humanoid.js";
 
 export class StupidFuckingEnemy extends humanoidEntity {
     constructor(x, y, size) {
         super(x, y, size);
         
+        this.speed = 4
+
         this.damage = 1;
 
         this.model = new EnemyModel(x, y, size);
 
-        this.movingDirection = directions.down;
+        this.movingDirection = this.randomDirection();
     }
 
-    changeDirection() {
+    randomDirection() {
         const randomDirection = Math.floor(Math.random() * 4); // 0 to 3
 
-        this.movingDirection = randomDirection;
+        return this.movingDirection = randomDirection;
     }
 
     update() {
@@ -55,28 +57,78 @@ export class StupidFuckingEnemy extends humanoidEntity {
 
 export class RandomWalker extends StupidFuckingEnemy {
     constructor(x, y, size) {
-        super(x. y, size);
+        super(x, y, size);
+
+        this.speed = 6
 
         this.stepLeftInterval = [10, 30]
         this.stepsLeft = 0;
-        this.movingDirection = this.changeDirection();
+        this.changeDirection();
         
+        this.model = new RandomWalkerEnemyModel(x,y,size)
     } 
-
+    
     changeDirection() {
-        super.changeDirection()
-
+        this.randomDirection();
+        
         this.stepsLeft = Math.floor(Math.random() * this.stepLeftInterval[1] - this.stepLeftInterval[0]) + this.stepLeftInterval[0]; // Random number of steps (between 10 and 29)
     }
-
+    
     update() {
-        super.move()
+        super.move(this.movingDirection)
 
-        if (this.stepsLeft <= 0) {
+        this.stepsLeft--;
+        if (this.stepsLeft <= 0 || this.recentCollision) {
             this.changeDirection()
         } 
     } 
+}
 
+export class Following extends StupidFuckingEnemy {
+    constructor(x, y, size) {
+        super(x, y, size);
+        
+        this.model = new FollowingEnemyModel(x, y, size);
+    }
+
+    update(player) {
+        let chosenDirection;
+       
+        this.speed = 2
+
+        const horizontalDistance = player.x - this.x;
+        const verticalDistance = player.y - this.y;
+
+        if (Math.abs(horizontalDistance) > Math.abs(verticalDistance) && horizontalDistance != 0) {
+            if (horizontalDistance < 0) {
+                chosenDirection = directions.left;
+            }
+            else {
+                chosenDirection = directions.right;
+            }
+        } 
+        else {
+            if (verticalDistance < 0) {
+                chosenDirection = directions.up;
+            } 
+            else {
+                chosenDirection = directions.down;
+            }
+        }
+
+        super.move(chosenDirection);
+    }
+}
+
+export class Giant extends RandomWalker {
+    constructor(x, y, size) {
+        // player colision is broken
+        super(x, y, size * 3);
+        this.speed = 1;
+        this.damage = 2;
+        this.maxHealth *= 3;
+        this.health = this.maxHealth;
+    }
 }
 
 export function createEnemy(constructor, x, y, size) {

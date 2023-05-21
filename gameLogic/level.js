@@ -48,7 +48,7 @@ export class Level {
     
         for (let enemy of this.enemys) {
             let removeBullets = []
-            enemy.update();
+            enemy.update(player);
             for (let bullet of bullets) {
                 const colision = enemy.checkBulletCollision(bullet);
     
@@ -62,7 +62,7 @@ export class Level {
                     }
                 }
             }
-    
+
             player.removeBullets(removeBullets);
         }
     
@@ -85,7 +85,17 @@ export class Level {
             player.takeDamage(colidingEnemy.damage);
         }
 
-        this.updateDoors = false;
+        if (this.enemys <= 0) {
+            for (let door of this.doors) {
+                if (door.goto != null) {
+                    door.setOpen(true);
+                }
+            }
+            this.updateDoors = true;
+        } else{
+            this.updateDoors = false;
+        }
+
     }
 
     checkIfNextLevel(player) {

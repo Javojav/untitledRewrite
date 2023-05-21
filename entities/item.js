@@ -87,6 +87,33 @@ export class Gun {
             
             this.setCooldown();
         }
+        else {
+            if (this.currentAmmo <= 0) {
+                this.reload();
+            }
+        }
+    }
+}
+
+export class AutoRifle extends Gun {
+    constructor(modelSize) {
+        super();
+        this.modelSize = modelSize;
+        
+        this.magCapacity = 31;
+
+        this.maxAmmo = this.magCapacity * 3;
+
+        this.currentAmmo = this.magCapacity;
+        this.inventoryAmmo = this.maxAmmo;
+
+        this.bulletSpeed = 15;
+        this.bulletSize = 10;
+        this.bulletDamage = 1;
+        this.reloadTime = 1.5;
+        this.shootCooldown = .2;
+
+        this.model = new itemModels.AutoRifle(this.modelSize);
     }
 }
 

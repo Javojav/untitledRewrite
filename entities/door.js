@@ -151,14 +151,6 @@ export class DoorLogic {
         return [this.currentX, this.currentY, this.currentW, this.currentH];
     }
 
-    open() {
-        this.open = true;
-    }
-
-    close() {
-        this.open = false;
-    }
-
     toggle() {
         this.open = !this.open;
     }
