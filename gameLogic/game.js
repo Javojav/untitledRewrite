@@ -46,8 +46,8 @@ export class Game {
     
 
     update(p5) {
-        this.player.handleInput(p5);
-        this.level.update(p5, this.player);
+        let input = this.player.handleInput(p5);
+        this.level.update(p5, this.player, input.move);
 
         let nextLevel = this.level.checkIfNextLevel(this.player);
 

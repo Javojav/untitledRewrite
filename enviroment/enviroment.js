@@ -48,9 +48,13 @@ export class Enviroment {
         return [...this.doors];
     }
     
-    update(p5, player, enemys, doors = null) {
+    update(p5, player, enemys, doors = null, updateLegsPlayer = false) {
         this.player.setPosition(player.x, player.y, player.facing);
         this.player.setHeight(player.size);
+
+        if (updateLegsPlayer)
+            this.player.updateLegs();
+
         this.player.alpha = player.invulnerable ? 100 : 255;
 
         this.enemys = enemys;
@@ -58,6 +62,7 @@ export class Enviroment {
         for (let enemy of this.enemys) {
             enemy.model.setHealthBarParameters(enemy.health, enemy.maxHealth)
             enemy.model.setPosition(enemy.x, enemy.y, enemy.facing);
+            enemy.model.updateLegs();
         }
         
         const holdingIndex = player.inventory.holding;

@@ -21,8 +21,9 @@ export class Humanoid {
        
        this.y = y;
        this.facing = directions.down;
+       this.legState = 0;
         
-        this.setThemParametersOrSomething();
+    this.setThemParametersOrSomething();
     }
     
     setThemParametersOrSomething() {
@@ -155,8 +156,8 @@ export class Humanoid {
     legs(p5) {
         p5.stroke(this.legsConfig[this.facing].color.r, this.legsConfig[this.facing].color.g, this.legsConfig[this.facing].color.b);
         p5.strokeWeight(this.legsConfig[this.facing].width);
-        p5.line(this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationTop, this.legsConfig[this.facing].y, this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationBottom, this.legsConfig[this.facing].y + this.legsConfig[this.facing].h);
-        p5.line(this.legsConfig[this.facing].x + this.legsConfig[this.facing].spearationTop, this.legsConfig[this.facing].y, this.legsConfig[this.facing].x + this.legsConfig[this.facing].spearationBottom, this.legsConfig[this.facing].y + this.legsConfig[this.facing].h);
+        p5.line(this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationTop, this.legsConfig[this.facing].y, this.legsConfig[this.facing].x - this.legsConfig[this.facing].spearationBottom, this.legsConfig[this.facing].y + this.legsConfig[this.facing].h + this.legState);
+        p5.line(this.legsConfig[this.facing].x + this.legsConfig[this.facing].spearationTop, this.legsConfig[this.facing].y, this.legsConfig[this.facing].x + this.legsConfig[this.facing].spearationBottom, this.legsConfig[this.facing].y + this.legsConfig[this.facing].h - this.legState);
     }
 
     arms(p5) {
@@ -188,6 +189,10 @@ export class Humanoid {
         this.y = y;
         this.facing = facing;
         this.setThemParametersOrSomething();
+    }
+
+    updateLegs() {
+        this.legState = this.legState >= 4 ? -4 : this.legState + 1;
     }
 
     setHeight(h) {

@@ -15,41 +15,63 @@ export class Player extends humanoidEntity {
             holding: 0
         };
         this.inventory.items = [new items.Pistol(this.size), new items.AutoRifle(this.size)];
+
+        console.log(this.model)
     }
 
     handleInput(p5) {
+        let ret = {
+            move: false,
+            shoot: false,
+            reload: false,
+            changeItem: false
+        }
     
         if (p5.keyIsDown(keys.up)) {
             this.move(directions.up);
+            ret.move = true;
         }
         if (p5.keyIsDown(keys.down)) {
             this.move(directions.down);
+            ret.move = true;
         }
         if (p5.keyIsDown(keys.left)) {
             this.move(directions.left);
+            ret.move = true;
         }
         if (p5.keyIsDown(keys.right)) {
             this.move(directions.right);
+            ret.move = true;
         }
         if (p5.keyIsDown(keys.shoot)) {
             const heldItem = this.inventory.items[this.inventory.holding];
 
             if (heldItem == null) {
-                return;
+                return ret;
             }
 
             const gunPosition = heldItem.model.getLastPosition();
             this.inventory.items[this.inventory.holding].shoot(this.room, gunPosition.x, gunPosition.y, this.facing);
+
+            ret.shoot = true;
         }
         if (p5.keyIsDown(keys.reload)) {
             this.inventory.items[this.inventory.holding].reload();
+
+            ret.reload = true;
         }
         if (p5.keyIsDown(keys.item1)) {
             this.inventory.holding = 0;
+
+            ret.changeItem = true;
         }
         if (p5.keyIsDown(keys.item2)) {
             this.inventory.holding = 1;
+
+            ret.changeItem = true;
         }
+
+        return ret;
     }
 
     clearShotBullets() {

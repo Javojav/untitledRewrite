@@ -71,11 +71,11 @@ export class Level {
         }
     }
     
-    update(p5, player) {
+    update(p5, player, updateLegsPlayer = false) {
         let doors = this.updateDoors ? this.doors : null;
 
         
-        this.enviroment.update(p5, player, this.enemys, doors);
+        this.enviroment.update(p5, player, this.enemys, doors, updateLegsPlayer);
 
         this.enemysAndBulletStuff(p5, player);
 

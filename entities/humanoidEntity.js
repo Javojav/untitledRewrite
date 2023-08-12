@@ -22,6 +22,7 @@ export class humanoidEntity extends Entity {
         super.move(direction);
 
         this.facing = direction;
+
     }
 
     checkWallCollision() {
